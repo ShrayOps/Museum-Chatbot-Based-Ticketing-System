@@ -1,0 +1,5 @@
+Flask==2.3.3
+nltk==3.8.1
+mysql-connector-python==8.1.0
+googletrans==3.1.0a0
+uuid==1.30
