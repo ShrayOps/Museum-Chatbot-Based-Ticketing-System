@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Booking - Admin Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Header -->
+            <header class="col-12 text-white p-3">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-0"><i class="fas fa-chart-line me-3"></i>Admin Dashboard</h1>
+                        <a href="/" class="btn btn-outline-light">
+                            <i class="fas fa-home me-2"></i>Back to Main
+                        </a>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="col-12 p-4">
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-ticket-alt fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Total Bookings</h5>
+                                <h2 class="card-text text-primary">{{ analytics.total_bookings }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-dollar-sign fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">Total Revenue</h5>
+                                <h2 class="card-text text-success">${{ analytics.total_revenue }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tags fa-3x text-info mb-3"></i>
+                                <h5 class="card-title">Average Ticket Size</h5>
+                                <h2 class="card-text text-info">
+                                    ${{ (analytics.total_revenue / analytics.total_bookings)|round(2) if analytics.total_bookings else 0 }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie me-2"></i>Bookings by Type</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="bookingsByTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3><i class="fas fa-calendar-alt me-2"></i>Popular Dates</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="popularDatesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0">Museum Ticket Booking System | Admin Dashboard</p>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js Initialization -->
+    <script>
+        // Bookings by Type Chart
+        const typeChartCtx = document.getElementById('bookingsByTypeChart').getContext('2d');
+        const typeChart = new Chart(typeChartCtx, {
+            type: 'pie',
+            data: {
+                labels: [{% for item in analytics.bookings_by_type %}"{{ item.ticket_type }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    data: [{% for item in analytics.bookings_by_type %}{{ item.count }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // Popular Dates Chart
+        const datesChartCtx = document.getElementById('popularDatesChart').getContext('2d');
+        const datesChart = new Chart(datesChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for item in analytics.popular_dates %}"{{ item.booking_date }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: 'Tickets Sold',
+                    data: [{% for item in analytics.popular_dates %}{{ item.tickets_sold }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: '#3498db',
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
