@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Ticket Booking Chatbot</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Header -->
+            <header class="col-12 text-white p-3">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-0"><i class="fas fa-museum me-3"></i>Museum Assistant</h1>
+                        <div class="language-selector">
+                            <select id="language-select" class="form-select">
+                                <option value="en">English</option>
+                                <option value="hi">हिंदी (Hindi)</option>
+                                <option value="mr">मराठी (Marathi)</option>
+                                <option value="gu">ગુજરાતી (Gujarati)</option>
+                                <option value="ta">தமிழ் (Tamil)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="col-12 col-md-8 mx-auto p-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2>Welcome to Museum Assistant</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Our AI assistant can help you with:</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-ticket-alt me-3 text-primary"></i>
+                                Booking museum tickets
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-info-circle me-3 text-primary"></i>
+                                Information about exhibitions
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-calendar-check me-3 text-primary"></i>
+                                Checking ticket availability
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-credit-card me-3 text-primary"></i>
+                                Processing payments
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Chatbot Interface -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-robot me-2"></i>Chat with Museum Assistant</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="chat-messages" class="chat-container mb-3">
+                            <!-- Messages will be displayed here -->
+                            <div class="message bot-message">
+                                <div class="message-content">
+                                    Welcome to Museum Booking Assistant! How can I help you today?
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="chat-form" class="d-flex align-items-center">
+                            <input type="text" id="user-input" class="form-control me-2" 
+                                   placeholder="Type your message" maxlength="200">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                        
+                        <div class="chat-info mt-2 text-center">
+                            <small class="text-muted">Messages are limited to 200 characters</small>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0">Museum Ticket Booking System | Powered by AI</p>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>
